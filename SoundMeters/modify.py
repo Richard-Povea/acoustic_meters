@@ -1,13 +1,15 @@
 from pandas import DataFrame
 from numpy  import log10, arange
 from datetime import datetime, timedelta
+from .sonometer import Sonometer
 
-def reduce_data(df:DataFrame, time:int = 60):
+def reduce_data(sonometer:Sonometer, time:int = 60):
     """Take the data and reduce it to the time period specified
 
     Args:
         time (int, optional): Time to reduce all data. Defaults to 60.
     """
+    df = sonometer.data
     index = df.index
     # Agrupar los datos en intervals de 60 segundos
     interval = time  # segundos
@@ -22,9 +24,6 @@ def reduce_data(df:DataFrame, time:int = 60):
                 ).mean()))
     log_mean = log_mean.drop(columns='interval').round(1)
     return log_mean.set_index(index[log_mean.index])
-
-def add():
-    pass
 
 def add_dates(data:DataFrame, base_date:str, formatted:bool=False)->DataFrame:
     """ Adds a date index to the dataframe
@@ -42,3 +41,6 @@ def add_dates(data:DataFrame, base_date:str, formatted:bool=False)->DataFrame:
     dates = [base_date + timedelta(seconds=number) for number in data.index]
     data.index = dates
     return data
+
+if __name__ == '__main__':
+    print("Modify package")
